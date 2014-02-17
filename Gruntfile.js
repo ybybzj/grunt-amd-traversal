@@ -34,9 +34,9 @@ module.exports = function(grunt) {
       default: {
 	  //example settings, for reference
         options:{
-          srcDir:'src',
+          srcDir:'../dolphinjs/projects/dolphin_video/src',
           sharedFilesPercent:0.75,
-          sharedPaths:'common',
+          sharedPaths:'build',
           cssShare:true,
           embeddedFiles:['*embedded.html']
         }

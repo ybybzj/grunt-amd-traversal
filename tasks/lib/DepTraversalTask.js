@@ -196,7 +196,9 @@ DepTraversalTask = (function() {
             modules[mn].share = _referredMap[mn];
             if (modules[mn].share === true) {
               return _shareDeps[mn] = {
-                deps: modules[mn].deps,
+                deps: _this.options.cssShare === true ? modules[mn].deps : _(modules[mn].deps).filter(function(d) {
+                  return !Util.fs.checkFileExt('css', d);
+                }),
                 absPath: PATH.resolve(htmlObj.fileBasePath, modules[mn].url)
               };
             }

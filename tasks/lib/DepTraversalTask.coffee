@@ -114,13 +114,17 @@ class DepTraversalTask
         _referredMap[k]= if Util.fs.checkFileExt 'css',k then @options.cssShare and  enoughToShare else enoughToShare
       )
       _shareHtmlObjs = _(@htmlObjs).filter((obj)=>not @_isShare obj.paths.src)
-      _(_shareHtmlObjs).each((htmlObj)->
+      _(_shareHtmlObjs).each((htmlObj)=>
         modules = htmlObj.modules
-        _(modules).each (v,mn)->
+        _(modules).each (v,mn)=>
           modules[mn].share = _referredMap[mn]
           if modules[mn].share is true
             _shareDeps[mn] = 
-              deps:modules[mn].deps
+              deps:
+                if @options.cssShare is true 
+                  modules[mn].deps
+                else
+                  _(modules[mn].deps).filter((d)->not Util.fs.checkFileExt 'css',d)
               absPath: PATH.resolve(htmlObj.fileBasePath,modules[mn].url)
       )
       _sharedModules = _resolveSharedFileOrder(_shareDeps)
